@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/favicon.png" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <script src="/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <header class="row-fluid">
+        <h1>Super fancy log analyzer</h1>
+        <nav>
+          <ul class="nav nav-tabs">
+            <li><a href="/access.log-<%= (Date.today - 1).strftime('%Y%m%d')%>">Yesterday</a></li>
+            <li><a href="/access.log-<%= (Date.today - 2).strftime('%Y%m%d')%>">The day before</a></li>
+
+          </ul>
+        </nav>
+      </header>
+      <div class="row-fluid">
+        <div class="span2 well">
+          <ul class="nav nav-list">
+            <% @links.each do |link| %>
+              <%
+                file = link.split('/')[2]
+                path = file.split('-')[0..1].join('-')
+                date = path.split('-')[1]
+                date = Date.parse(date)
+              %>
+              <li><a href="<%= path %>"><%= date %></a></li>
+            <% end %>
+          </ul>                  
+        </div>
+        <div class="span10">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
