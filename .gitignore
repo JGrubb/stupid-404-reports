@@ -1,1 +1,3 @@
 cache
+Gemfile.lock
+*.swp
