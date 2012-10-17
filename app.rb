@@ -39,9 +39,15 @@ class App < Sinatra::Base
       File.open("#{dir}/cache/#{params[:id]}", 'w') do |file|
         file.puts @top_ten.to_yaml
       end
+#  File.delete("#{file}")
     end 
     erb :file  
   end
+
+  get 'host/:date' do
+    "hello"
+  end
+
 end
 
 App.run!

@@ -24,7 +24,7 @@
               <%
                 file = link.split('/')[-1]
                 date = file.split('-')[1]
-                date = Date.parse(date)
+                date = Date.parse(date).strftime('%b %e, %Y - %A')
               %>
               <li><a href="<%= file %>"><%= date %></a></li>
             <% end %>
