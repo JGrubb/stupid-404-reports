@@ -22,12 +22,11 @@
           <ul class="nav nav-list">
             <% @links.each do |link| %>
               <%
-                file = link.split('/')[2]
-                path = file.split('-')[0..1].join('-')
-                date = path.split('-')[1]
+                file = link.split('/')[-1]
+                date = file.split('-')[1]
                 date = Date.parse(date)
               %>
-              <li><a href="<%= path %>"><%= date %></a></li>
+              <li><a href="<%= file %>"><%= date %></a></li>
             <% end %>
           </ul>                  
         </div>

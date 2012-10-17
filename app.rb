@@ -14,8 +14,8 @@ class App < Sinatra::Base
 
     @links = Dir["#{dir}/cache/*"].sort.reverse!.take(30)
 
-    if File.exists?("#{dir}/cache/#{params[:id]}-#{Date.today.strftime('%Y%m%d')}")
-      @top_ten = YAML::load(File.open "#{dir}/cache/#{params[:id]}-#{Date.today.strftime('%Y%m%d')}")
+    if File.exists?("#{dir}/cache/#{params[:id]}")
+      @top_ten = YAML::load(File.open "#{dir}/cache/#{params[:id]}")
     else
       hash = {}
       total = 0
@@ -36,7 +36,7 @@ class App < Sinatra::Base
       #Populate @top_ten with top ten 404 errors
       @top_ten = Hash[hash.sort_by { |k,v| -v }[0..9]]
 
-      File.open("#{dir}/cache/#{params[:id]}-#{Date.today.strftime('%Y%m%d')}", 'w') do |file|
+      File.open("#{dir}/cache/#{params[:id]}", 'w') do |file|
         file.puts @top_ten.to_yaml
       end
     end 
