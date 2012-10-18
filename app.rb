@@ -34,7 +34,7 @@ class App < Sinatra::Base
       end
       
       #Populate @top_ten with top ten 404 errors
-      @top_ten = Hash[hash.sort_by { |k,v| -v }[0..9]]
+      @top_ten = Hash[hash.sort_by { |k,v| -v }[0..99]]
 
       File.open("#{dir}/cache/#{params[:id]}", 'w') do |file|
         file.puts @top_ten.to_yaml
