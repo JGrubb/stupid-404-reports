@@ -1,53 +1,37 @@
 require 'yaml'
 require 'sinatra'
 require 'date'
+load 'models.rb'
 
 class App < Sinatra::Base
   get '/' do
     'hello'
   end
 
-  get '/:id' do
+  get '404s/' do
     
-    file = "/home/jgrubb/logs/#{params[:id]}"
-    dir = File.dirname(__FILE__)
+  end
 
-    @links = Dir["#{dir}/cache/*"].sort.reverse!.take(30)
+  get '/404s/:date' do
+    date = params[:date]
 
-    if File.exists?("#{dir}/cache/#{params[:id]}")
-      @top_ten = YAML::load(File.open "#{dir}/cache/#{params[:id]}")
-    else
-      hash = {}
-      total = 0
-
-      # Read the log file and searchf or 404s
-      File.open("#{file}").each_line do |line|
-        arr = line.split(' ')
-        if arr[8] == '404'
-          total += 1
-          unless hash.has_key?("#{arr[6]}")
-            hash.merge!("#{arr[6]}" => 1)
-          else
-            hash["#{arr[6]}"] += 1
-          end
-        end
-      end
-      
-      #Populate @top_ten with top ten 404 errors
-      @top_ten = Hash[hash.sort_by { |k,v| -v }[0..99]]
-
-      File.open("#{dir}/cache/#{params[:id]}", 'w') do |file|
-        file.puts @top_ten.to_yaml
-      end
-#  File.delete("#{file}")
-    end 
+    # If cached already, serve that.  Else parse.
+    @top = FileFetcher.new(date).get_404 ? 
+      FileFetcher.new(date).get_404 : 
+      LogParser.new(date).get_404
+     
     erb :file  
   end
 
-  get 'host/:date' do
-    "hello"
-  end
+  get '/site-rank/:date' do
+    date = params[:date]
 
+    @top = FileFetcher.new(date).get_site_rank ?
+      FileFetcher.new(date).get_site_rank :
+      LogParser.new(date).get_site_rank
+
+    erb :file
+  end
 end
 
 App.run!

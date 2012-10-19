@@ -11,8 +11,8 @@
         <h1>Super fancy log analyzer</h1>
         <nav>
           <ul class="nav nav-tabs">
-            <li><a href="/access.log-<%= (Date.today - 1).strftime('%Y%m%d')%>">Yesterday</a></li>
-            <li><a href="/access.log-<%= (Date.today - 2).strftime('%Y%m%d')%>">The day before</a></li>
+            <li><a href="<%= (Date.today - 1).strftime('%Y%m%d')%>">Yesterday</a></li>
+            <li><a href="<%= (Date.today - 2).strftime('%Y%m%d')%>">The day before</a></li>
 
           </ul>
         </nav>
@@ -20,14 +20,6 @@
       <div class="row-fluid">
         <div class="span3 well">
           <ul class="nav nav-list">
-            <% @links.each do |link| %>
-              <%
-                file = link.split('/')[-1]
-                date = file.split('-')[1]
-                date = Date.parse(date).strftime('%b %e, %Y - %A')
-              %>
-              <li><a href="<%= file %>"><%= date %></a></li>
-            <% end %>
           </ul>                  
         </div>
         <div class="span9">
