@@ -27,7 +27,6 @@ class App < Sinatra::Base
       LogParser.new(date).by_file
    
     @date = Date.parse(date).strftime('%b %d, %Y')
-    @sidebar = "404s"
     erb :file  
   end
 
@@ -36,12 +35,12 @@ class App < Sinatra::Base
 
     @title = "404s by site"
     @links = Dir["#{File.dirname __FILE__}/cache/by-site/*"].sort.reverse!.take(30)
+    # If cached, serve, else parse.
     @top = FileFetcher.new(date).by_site ?
       FileFetcher.new(date).by_site :
       LogParser.new(date).by_site
 
     @date = Date.parse(date).strftime('%b %d, %Y')
-    @sidebar = "rank"
     erb :file
   end
 end
