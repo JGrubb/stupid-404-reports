@@ -13,6 +13,10 @@ class FileFetcher
     results = self.read_that_file('by-site')
   end
 
+  def method_missing(m, *args)
+    
+  end
+
   def read_that_file(str)
     results = []
     if File.exists?("#{@cache_dir}/#{str}/#{@date}")
@@ -56,11 +60,13 @@ class LogParser
     results = {}
     File.open(@file).each_line do |line|
       array = line.split(' ')
-      site = array[-3].split('=')[1]
-      unless results.has_key?(site)
-        results.merge!("#{site}" => 1)
-      else
-        results["#{site}"] += 1
+      if array[8] == '404'
+        site = array[-3].split('=')[1]
+        unless results.has_key?(site)
+          results.merge!("#{site}" => 1)
+        else
+          results["#{site}"] += 1
+        end
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
