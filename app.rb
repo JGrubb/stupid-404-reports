@@ -8,28 +8,40 @@ class App < Sinatra::Base
     'hello'
   end
 
-  get '404s/' do
-    
+  get '/file' do
+    redirect "/file/#{(Date.today - 1).strftime('%Y%m%d')}"    
   end
 
-  get '/404s/:date' do
-    date = params[:date]
+  get '/site' do
+    redirect "/site/#{(Date.today - 1).strftime('%Y%m%d')}"
+  end
 
+  get '/file/:date' do
+    date = params[:date]
+    
+    @title = '404s by file'
+    @links = Dir["#{File.dirname __FILE__}/cache/by-file/*"].sort.reverse!.take(30)
     # If cached already, serve that.  Else parse.
-    @top = FileFetcher.new(date).get_404 ? 
-      FileFetcher.new(date).get_404 : 
-      LogParser.new(date).get_404
-     
+    @top = FileFetcher.new(date).by_file ? 
+      FileFetcher.new(date).by_file : 
+      LogParser.new(date).by_file
+   
+    @date = Date.parse(date).strftime('%b %d, %Y')
+    @sidebar = "404s"
     erb :file  
   end
 
-  get '/site-rank/:date' do
+  get '/site/:date' do
     date = params[:date]
 
-    @top = FileFetcher.new(date).get_site_rank ?
-      FileFetcher.new(date).get_site_rank :
-      LogParser.new(date).get_site_rank
+    @title = "404s by site"
+    @links = Dir["#{File.dirname __FILE__}/cache/by-site/*"].sort.reverse!.take(30)
+    @top = FileFetcher.new(date).by_site ?
+      FileFetcher.new(date).by_site :
+      LogParser.new(date).by_site
 
+    @date = Date.parse(date).strftime('%b %d, %Y')
+    @sidebar = "rank"
     erb :file
   end
 end

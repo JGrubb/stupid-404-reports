@@ -1,0 +1,8 @@
+<h4><%= @title %></h4>
+<% @links.each do |link| %>
+  <%
+   date = link.split('/')[-1]
+   date_parsed = Date.parse(date).strftime('%b %e, %Y - %A')
+  %>
+  <li><a href="<%= date %>"><%= date_parsed %></a></li>
+<% end %>

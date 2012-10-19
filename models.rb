@@ -5,12 +5,12 @@ class FileFetcher
     @date = date
   end
 
-  def get_404
-    results = self.read_that_file('404s')
+  def by_file
+    results = self.read_that_file('by-file')
   end
 
-  def get_site_rank
-    results = self.read_that_file('rank')
+  def by_site
+    results = self.read_that_file('by-site')
   end
 
   def read_that_file(str)
@@ -33,7 +33,7 @@ class LogParser
     @cache_dir = "#{File.dirname __FILE__}/cache"
   end
 
-  def get_404
+  def by_file
     results = {} 
     File.open(@file).each_line do |line|
       arr = line.split(' ')
@@ -46,13 +46,13 @@ class LogParser
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
-    File.open("#{@cache_dir}/404s/#{@date}", 'w') do |file|
+    File.open("#{@cache_dir}/by-file/#{@date}", 'w') do |file|
       file.puts @top.to_yaml
     end
     @top
   end
 
-  def get_site_rank
+  def by_site
     results = {}
     File.open(@file).each_line do |line|
       array = line.split(' ')
@@ -64,7 +64,7 @@ class LogParser
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
-    File.open("#{@cache_dir}/rank/#{@date}", 'w') do |file|
+    File.open("#{@cache_dir}/by-site/#{@date}", 'w') do |file|
       file.puts @top.to_yaml
     end
     @top

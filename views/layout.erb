@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title><%= @title %></title>
     <link href="/favicon.png" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
     <script src="/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
@@ -11,8 +12,8 @@
         <h1>Super fancy log analyzer</h1>
         <nav>
           <ul class="nav nav-tabs">
-            <li><a href="<%= (Date.today - 1).strftime('%Y%m%d')%>">Yesterday</a></li>
-            <li><a href="<%= (Date.today - 2).strftime('%Y%m%d')%>">The day before</a></li>
+            <li><a href="/site">By Site</a></li>
+            <li><a href="/file">By file</a></li>
 
           </ul>
         </nav>
@@ -20,6 +21,7 @@
       <div class="row-fluid">
         <div class="span3 well">
           <ul class="nav nav-list">
+            <%= erb :sidebar %>
           </ul>                  
         </div>
         <div class="span9">
