@@ -6,15 +6,18 @@ class FileFetcher
   end
 
   def by_file
-    results = self.read_that_file('by-file')
+    self.read_that_file 'by_file'
   end
 
   def by_site
-    results = self.read_that_file('by-site')
+    self.read_that_file 'by_site'
   end
 
   def method_missing(m, *args)
-    
+    if results = self.read_that_file(m)
+    else
+      super
+    end
   end
 
   def read_that_file(str)
@@ -50,7 +53,7 @@ class LogParser
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
-    File.open("#{@cache_dir}/by-file/#{@date}", 'w') do |file|
+    File.open("#{@cache_dir}/by_file/#{@date}", 'w') do |file|
       file.puts @top.to_yaml
     end
     @top
@@ -70,7 +73,7 @@ class LogParser
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
-    File.open("#{@cache_dir}/by-site/#{@date}", 'w') do |file|
+    File.open("#{@cache_dir}/by_site/#{@date}", 'w') do |file|
       file.puts @top.to_yaml
     end
     @top
