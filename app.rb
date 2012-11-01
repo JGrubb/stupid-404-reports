@@ -5,7 +5,8 @@ load 'models.rb'
 
 class App < Sinatra::Base
   get '/' do
-    'hello'
+    @links = []
+    erb :home
   end
 
   get '/:method' do
