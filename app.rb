@@ -14,6 +14,33 @@ class App < Sinatra::Base
     redirect "/#{method}/#{(Date.today - 1).strftime('%Y%m%d')}"    
   end
 
+  get '/site_by_file/:site/:date' do
+    site = params[:site]
+    date = params[:date]
+
+    @title = "#{site} on #{Date.parse(date)}"
+    @links = [] 
+    @top = FileFetcher.new(date).site_by_date(site) ?
+      FileFetcher.new(date).site_by_date(site) :
+      LogParser.new(date).site_by_date(site)
+    @date_toi = date.to_i
+    @date = Date.parse(date).strftime('%b %d, %Y')
+    erb :site_by_file
+  end
+
+  get '/site_by_file/:site/:date/:file' do
+    site = params[:site]
+    date = params[:date]
+    file = params[:file]
+
+    @title = "Referrers - #{site} - #{file}"
+    @links = []
+    @top = LogParser.new(date).referrer(site, file)
+    @date_toi = date.to_i
+    @date = Date.parse(date).strftime('%b %d, %y')
+    erb :file
+  end
+
   get '/:method/:date' do
     date = params[:date]
     method = params[:method].to_sym
@@ -27,8 +54,13 @@ class App < Sinatra::Base
    
     @date_toi = date.to_i
     @date = Date.parse(date).strftime('%b %d, %Y')
-    erb :file  
+    if method.to_s == 'by_file'
+      erb :file
+    else
+      erb :site
+    end
   end
+
 end
 
 App.run!
