@@ -8,7 +8,7 @@
 <% @top.each_with_index do |l,index| %>
   <tr>
     <td><%= index + 1 %></td>
-    <td><%= l[0] %></td>
+    <td><a href="/site_by_file/<%= l[0] %>/<%= @date_toi %> "><%= l[0] %></a></td>
     <td><%= l[1] %></td>
   </tr>
 <% end %>

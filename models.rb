@@ -13,6 +13,10 @@ class FileFetcher
     self.read_that_file 'by_site'
   end
 
+  def by_ip
+    self.read_that_file 'by_ip'
+  end
+
   def site_by_date(site)
     self.read_that_file('site_by_date', site)
   end
@@ -108,20 +112,37 @@ class LogParser
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
   end
 
-  def referrer(site, file)
+#  def referrer(site, file)
+#    results = {}
+#    File.open(@file).each_line do |line|
+#      array = line.split(' ')
+#      if array[8] == '404'
+#        if (array[-3].split('=')[1] == site && array[6] == file)
+#          unless results.has_key?("#{array[10]}")
+#            results.merge!("#{array[10]}" => 1)
+#          else
+#            results["#{array[10]}"] += 1
+#          end
+#        end
+#      end
+#    end
+#    @top = Hash[results.sort_by { |k,v| -v }[0..99]]
+#  end
+
+  def by_ip
     results = {}
     File.open(@file).each_line do |line|
-      array = line.split(' ')
-      if array[8] == '404'
-        if (array[-3].split('=')[1] == site && array[6] == file)
-          unless results.has_key?("#{array[10]}")
-            results.merge!("#{array[10]}" => 1)
-          else
-            results["#{array[10]}"] += 1
-          end
-        end
+      array = line.split
+      unless results.has_key?("#{array[0]}")
+        results.merge!("#{array[0]}" => 1)
+      else
+        results["#{array[0]}"] += 1
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
+    File.open("#{@cache_dir}/by_ip/#{@date}", 'w') do |file|
+      file.puts @top.to_yaml
+    end
   end
+
 end

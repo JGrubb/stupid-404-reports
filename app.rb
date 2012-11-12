@@ -28,18 +28,18 @@ class App < Sinatra::Base
     erb :site_by_file
   end
 
-  get '/site_by_file/:site/:date/:file' do
-    site = params[:site]
-    date = params[:date]
-    file = params[:file]
-
-    @title = "Referrers - #{site} - #{file}"
-    @links = []
-    @top = LogParser.new(date).referrer(site, file)
-    @date_toi = date.to_i
-    @date = Date.parse(date).strftime('%b %d, %y')
-    erb :file
-  end
+#  get '/site_by_file/:site/:date/:file' do
+#    site = params[:site]
+#    date = params[:date]
+#    file = params[:file]
+#
+#    @title = "Referrers - #{site} - #{file}"
+#    @links = []
+#    @top = LogParser.new(date).referrer(site, file)
+#    @date_toi = date.to_i
+#    @date = Date.parse(date).strftime('%b %d, %y')
+#    erb :standard
+#  end
 
   get '/:method/:date' do
     date = params[:date]
@@ -47,6 +47,7 @@ class App < Sinatra::Base
 
     @title = '404s by file'
     @links = Dir["#{File.dirname __FILE__}/cache/#{method.to_s}/*"].sort.reverse!.take(30)
+    
     # If cached already, serve that.  Else parse.
     @top = FileFetcher.new(date).send(method) ? 
       FileFetcher.new(date).send(method) :
@@ -54,11 +55,8 @@ class App < Sinatra::Base
    
     @date_toi = date.to_i
     @date = Date.parse(date).strftime('%b %d, %Y')
-    if method.to_s == 'by_file'
-      erb :file
-    else
-      erb :site
-    end
+
+    erb(method.to_sym)
   end
 
 end
