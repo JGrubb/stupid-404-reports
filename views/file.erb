@@ -1,4 +1,4 @@
-<h2 style="text-align:center"><a href="<%= (@date_toi - 1) %>">&lt;</a><%= @date %><a href="<%= (@date_toi + 1) %>">&gt;</a></h2>
+<h2 style="text-align:center"><a href="<%= (Date.parse(@date_toi.to_s) - 1).to_s.gsub(/-/, '') %>">&lt;</a><%= @date %><a href="<%= (Date.parse(@date_toi.to_s) + 1).to_s.gsub(/-/, '') %>">&gt;</a></h2>
 <table class="table table-striped table-bordered">
   <tr>
     <th>Rank</th>
