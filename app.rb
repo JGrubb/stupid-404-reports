@@ -59,6 +59,10 @@ class App < Sinatra::Base
     erb(method.to_sym)
   end
 
+  get '/:method/:date/:ip' do
+
+  end
+
 end
 
 App.run!
