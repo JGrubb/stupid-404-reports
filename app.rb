@@ -1,5 +1,5 @@
 require 'yaml'
-require 'sinatra'
+require 'sinatra/base'
 require 'date'
 load 'models.rb'
 

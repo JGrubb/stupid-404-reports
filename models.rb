@@ -50,7 +50,7 @@ end
 class LogParser
   
   def initialize(date)
-    @file = "/home/jgrubb/logs/access.log-#{date}"
+    @file = "/home/jgrubb/merged_logs/access.log-#{date}"
     @top = []
     @date = date
     @cache_dir = "#{File.dirname __FILE__}/cache"
