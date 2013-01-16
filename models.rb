@@ -17,8 +17,8 @@ class FileFetcher
     self.read_that_file 'by_ip'
   end
 
-  def site_by_date(site)
-    self.read_that_file('site_by_date', site)
+  def site_by_file(site)
+    self.read_that_file('site_by_file', site)
   end
 
   def method_missing(m, *args)
@@ -31,8 +31,8 @@ class FileFetcher
   def read_that_file(str, site = nil)
     results = []
     if site
-      if File.exists?("#{@cache_dir}/#{str}/#{site}-#{@date}")
-        results = YAML::load(File.open "#{@cache_dir}/#{str}/#{site}-#{@date}")
+      if File.exists?("#{@cache_dir}/#{str}/#{site}/#{@date}")
+        results = YAML::load(File.open "#{@cache_dir}/#{str}/#{site}/#{@date}")
       else
         results = nil
       end
@@ -95,7 +95,7 @@ class LogParser
     @top
   end
 
-  def site_by_date(site)
+  def site_by_file(site)
     results = {}
     File.open(@file).each_line do |line|
       array = line.split(' ')
@@ -110,6 +110,12 @@ class LogParser
       end
     end
     @top = Hash[results.sort_by { |k,v| -v }[0..99]]
+    unless File.directory?("#{@cache_dir}/site_by_file/#{site}")
+      Dir.mkdir "#{@cache_dir}/site_by_file/#{site}", 0774
+    end
+    File.open("#{@cache_dir}/site_by_file/#{site}/#{@date}", "w") do |file|
+      file.puts @top.to_yaml
+    end
   end
 
 #  def referrer(site, file)

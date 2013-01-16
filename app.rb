@@ -20,9 +20,9 @@ class App < Sinatra::Base
 
     @title = "#{site} on #{Date.parse(date)}"
     @links = [] 
-    @top = FileFetcher.new(date).site_by_date(site) ?
-      FileFetcher.new(date).site_by_date(site) :
-      LogParser.new(date).site_by_date(site)
+    @top = FileFetcher.new(date).site_by_file(site) ?
+      FileFetcher.new(date).site_by_file(site) :
+      LogParser.new(date).site_by_file(site)
     @date_toi = date.to_i
     @date = Date.parse(date).strftime('%b %d, %Y')
     erb :site_by_file
