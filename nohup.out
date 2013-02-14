@@ -1,8 +1,0 @@
-[2013-01-15 21:44:05] INFO  WEBrick 1.3.1
-[2013-01-15 21:44:05] INFO  ruby 1.9.3 (2012-11-10) [x86_64-linux]
-== Sinatra/1.3.3 has taken the stage on 4567 for development with backup from WEBrick
-[2013-01-15 21:44:05] INFO  WEBrick::HTTPServer#start: pid=27639 port=4567
-
-== Sinatra has ended his set (crowd applauds)
-[2013-01-15 21:44:15] INFO  going to shutdown ...
-[2013-01-15 21:44:15] INFO  WEBrick::HTTPServer#start done.
